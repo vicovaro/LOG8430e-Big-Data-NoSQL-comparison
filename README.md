@@ -16,7 +16,7 @@ AMD Ryzen 7 2700X Eight-Core Processor
 
 ## The three benchmarked NoSQL databases, booted using Docker-Compose
 
-Each database will be contained in a cluster containing three nodes.
+Each database will be contained in a cluster.
 
 ### Redis
 
@@ -32,7 +32,7 @@ The two secondary nodes all are replicas of the third node redis-node-5. The fol
 https://github.com/brianfrankcooper/YCSB/tree/master/redis
 
 ```
-python2 ./bin/ycsb load redis -s -P workloads/workloada -p "redis.password=bitnami" -p "redis.cluster=true" -p "redis.host=172.17.0.1" -p "redis.port=6379" > outputLoadRedis.txt
+./YCSB/bin/ycsb.sh load redis -s -P "./YCSB/workloads/workloada" -p "redis.cluster=true" -p "redis.host=172.17.0.1" -p "redis.port=6379" > outputLoadRedis.txt
 ```
 
 ### Cassandra
