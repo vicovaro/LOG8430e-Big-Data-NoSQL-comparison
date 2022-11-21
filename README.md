@@ -10,16 +10,35 @@ AMD Ryzen 7 2700X Eight-Core Processor
 
 ## Requirements
 
-You need to install docker engine with Docker Compose before running the scripts.
+- You need to install docker engine with Docker Compose before running the scripts.
+- Java 11 JDK is also required (we recommend Temurin JDK 11).
+- Maven is also required.
 
-## The three benchmarked NoSL databases, booted using Docker-Compose
+## The three benchmarked NoSQL databases, booted using Docker-Compose
+
+Each database will be contained in a cluster containing three nodes.
+
+### Redis
 
 Redis for key-value pair-based databases
 https://github.com/bitnami/bitnami-docker-redis-cluster/blob/master/docker-compose.yml
 
 ```
-docker compose -f redis-docker-compose.yml up
+sudo docker compose -f redis-docker-compose.yml up
 ```
 
+This will create two secondary or replicate nodes with a third primary node acting as chief named redis-node-5.
+The two secondary nodes all are replicas of the third node redis-node-5. The following link is the instruction to test the Redis cluster.
+https://github.com/brianfrankcooper/YCSB/tree/master/redis
+
+```
+./bin/ycsb.sh load redis -s -P ./workloads/workloada -p "redis.host=127.0.0.1" -p "redis.port=6379" > outputLoadRedis.txt
+```
+
+### Cassandra
+
 Cassandra for column-based databases
+
+### MongoDB
+
 MongoDB for document-oriented databases
