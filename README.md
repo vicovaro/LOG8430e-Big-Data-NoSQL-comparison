@@ -11,8 +11,8 @@ AMD Ryzen 7 2700X Eight-Core Processor
 ## Requirements
 
 - You need to install docker engine with Docker Compose before running the scripts.
-- Java 11 JDK is also required (we recommend Temurin JDK 11).
-- Maven is also required.
+- Java 11 JDK is required (we recommend Temurin JDK 11).
+- The tool YCSB is included and it uses the latest master branch. We did not use the 0.17 version. The necessary code is already compiled using Maven.
 
 ## The three benchmarked NoSQL databases, booted using Docker-Compose
 
@@ -32,7 +32,7 @@ The two secondary nodes all are replicas of the third node redis-node-5. The fol
 https://github.com/brianfrankcooper/YCSB/tree/master/redis
 
 ```
-./bin/ycsb.sh load redis -s -P ./workloads/workloada -p "redis.host=127.0.0.1" -p "redis.port=6379" > outputLoadRedis.txt
+python2 ./bin/ycsb load redis -s -P workloads/workloada -p "redis.password=bitnami" -p "redis.cluster=true" -p "redis.host=172.17.0.1" -p "redis.port=6379" > outputLoadRedis.txt
 ```
 
 ### Cassandra
