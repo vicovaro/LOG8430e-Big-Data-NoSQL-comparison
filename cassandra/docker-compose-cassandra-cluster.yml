@@ -1,0 +1,78 @@
+# Thanks to https://digitalis.io/blog/apache-cassandra/containerized-cassandra-cluster-for-local-testing/
+
+# Run Cassandra cluster: docker-compose -f <this-filename> up -d
+
+# List containers: docker ps
+
+# Show cluster status: docker exec cassandra-db-node-1 nodetool status
+
+# Run DML & DQL commands: docker exec -it cassandra-db-node-1 cqlsh
+
+# Stop cluster: docker-compose -f <this-filename> stop
+
+version: '3.9'
+networks:
+  cassandra:
+services:
+  cassandra-db-node-1:
+    image: cassandra:3.11.10
+    container_name: cassandra-db-node-1
+    hostname: cassandra-db-node-1
+    healthcheck:
+        test: ["CMD", "cqlsh", "-e", "describe keyspaces" ]
+        interval: 5s
+        timeout: 5s
+        retries: 60
+    networks:
+      - cassandra
+    ports:
+      - "9042:9042"
+    volumes:
+      - /tmp/data/cassandra-db-node-1:/var/lib/cassandra
+    environment: &environment
+        CASSANDRA_SEEDS: "cassandra-db-node-1,cassandra-db-node-2"
+        CASSANDRA_CLUSTER_NAME: SolarSystem
+        CASSANDRA_DC: Mars
+        CASSANDRA_RACK: West
+        CASSANDRA_ENDPOINT_SNITCH: GossipingPropertyFileSnitch
+        CASSANDRA_NUM_TOKENS: 128
+
+  cassandra-db-node-2:
+    image: cassandra:3.11.10
+    container_name: cassandra-db-node-2
+    hostname: cassandra-db-node-2
+    healthcheck:
+        test: ["CMD", "cqlsh", "-e", "describe keyspaces" ]
+        interval: 5s
+        timeout: 5s
+        retries: 60
+    networks:
+      - cassandra
+    ports:
+      - "9043:9042"
+    volumes:
+      - /tmp/data/cassandra-db-node-2:/var/lib/cassandra
+    environment: *environment
+    depends_on:
+      cassandra-db-node-1:
+        condition: service_healthy
+
+  cassandra-db-node-3:
+    image: cassandra:3.11.10
+    container_name: cassandra-db-node-3
+    hostname: cassandra-db-node-3
+    healthcheck:
+        test: ["CMD", "cqlsh", "-e", "describe keyspaces" ]
+        interval: 5s
+        timeout: 5s
+        retries: 60
+    networks:
+      - cassandra
+    ports:
+      - "9044:9042"
+    volumes:
+      - /tmp/data/cassandra-db-node-3:/var/lib/cassandra
+    environment: *environment
+    depends_on:
+      cassandra-db-node-2:
+        condition: service_healthy
