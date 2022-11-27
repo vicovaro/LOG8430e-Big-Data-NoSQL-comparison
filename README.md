@@ -24,6 +24,7 @@ Redis for key-value pair-based databases
 https://github.com/bitnami/bitnami-docker-redis-cluster/blob/master/docker-compose.yml
 
 ```
+cd redis
 sudo docker compose -f redis-docker-compose.yml up
 ```
 
@@ -32,13 +33,65 @@ The two secondary nodes all are replicas of the third node redis-node-5. The fol
 https://github.com/brianfrankcooper/YCSB/tree/master/redis
 
 ```
-./YCSB/bin/ycsb.sh load redis -s -P "./YCSB/workloads/workloada" -p "redis.cluster=true" -p "redis.host=172.17.0.1" -p "redis.port=6379" > outputLoadRedis.txt
+./bin/ycsb load redis -s -P workloads/workloada -p "redis.host=127.0.0.1" -p "redis.port=6379" -p "redis.cluster=true" > outputLoadRedis.txt
+./bin/ycsb run redis -s -P workloads/workloada -p "redis.host=127.0.0.1" -p "redis.port=6379" -p "redis.cluster=true" > outputRunRedis.txt
 ```
 
 ### Cassandra
 
 Cassandra for column-based databases
+```
+cd cassandra
+sudo docker-compose -f docker-compose-cassandra-cluster.yml up
+```
+
+Create a table for use with YCSB
+```
+sudo docker exec -it cassandra-db-node-1 sh
+cqlsh
+cqlsh> create keyspace ycsb
+    WITH REPLICATION = {'class' : 'SimpleStrategy', 'replication_factor': 3 };
+cqlsh> USE ycsb;
+cqlsh> create table usertable (
+    y_id varchar primary key,
+    field0 varchar,
+    field1 varchar,
+    field2 varchar,
+    field3 varchar,
+    field4 varchar,
+    field5 varchar,
+    field6 varchar,
+    field7 varchar,
+    field8 varchar,
+    field9 varchar);
+```
+
+
+```
+./bin/ycsb load cassandra-cql -p hosts="127.0.0.1" -s -P workloads/workloada > outputLoadCassandra.txt
+./bin/ycsb run cassandra-cql -p hosts="127.0.0.1" -s -P workloads/workloada > outputRunCassandra.txt
+```
+
+
 
 ### MongoDB
 
 MongoDB for document-oriented databases
+```
+cd mongo
+sudo docker-compose -f mongo-docker-compose.yml up
+```
+
+add the following content in /etc/hosts if you just created a new VM
+
+```
+127.0.0.1       mongo1
+127.0.0.1       mongo2
+127.0.0.1       mongo3
+```
+
+```
+./bin/ycsb load mongodb -s -P workloads/workloada -p recordcount=1000 -p mongodb.upsert=true -p mongodb.url=mongodb://mongo1:30001,mongo2:30002,mongo3:30003/?replicaSet=my-replica-set > outputLoadMongo.txt
+./bin/ycsb run mongodb -s -P workloads/workloada -p recordcount=1000 -p mongodb.upsert=true -p mongodb.url=mongodb://mongo1:30001,mongo2:30002,mongo3:30003/?replicaSet=my-replica-set > outputRunMongo.txt
+```
+
