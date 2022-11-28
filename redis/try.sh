@@ -24,8 +24,9 @@ average_read_latency=$(python -c "print $read_latency/$total")
 average_clean_latency=$(python -c "print $clean_latency/$total")
 average_update_latency=$(python -c "print $update_latency/$total")
 
-echo "Redis benchmark result:"
-echo "Average ThroughPut(ops/sec) = $average_throughput"
-echo "Average Read Latency(us) = $average_read_latency "
-echo "Average Clean Latency(us) = $average_clean_latency"
-echo "Average Update Latency(us) = $average_update_latency"
+echo "" > result.txt
+echo "Redis benchmark result:" >> result.txt
+echo "Average ThroughPut(ops/sec) = $average_throughput" >> result.txt
+echo "Average Read Latency(us) = $average_read_latency " >> result.txt
+echo "Average Clean Latency(us) = $average_clean_latency" >> result.txt
+echo "Average Update Latency(us) = $average_update_latency" >> result.txt
