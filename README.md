@@ -81,7 +81,12 @@ YCSB benchmark
 ./bin/ycsb load cassandra-cql -p hosts="127.0.0.1" -s -P workloads/workloada > outputLoadCassandra.txt
 ./bin/ycsb run cassandra-cql -p hosts="127.0.0.1" -s -P workloads/workloada > outputRunCassandra.txt
 ```
-
+### Cassandra Automation Script
+The script will setup cassandra cluster, run YCSB, tear down cassandra cluster and analyze the result by averageing the statisics from each trial
+```
+cd cassandra
+./benchmark_cassandra.sh
+```
 
 
 ### MongoDB
@@ -107,7 +112,7 @@ YCSB benchmark
 ```
 
 ### MongoDB Automation Script
-The script will setup mongodb cluster, run YCSB, tear down mongo cluster and analyze the result by averageing the statisics from each trial
+The script will setup mongodb cluster, run YCSB, tear down mongodb cluster and analyze the result by averageing the statisics from each trial
 ```
 cd mongo
 ./benchmark_mongo.sh
