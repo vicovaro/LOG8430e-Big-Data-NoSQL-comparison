@@ -1,6 +1,0 @@
-
-Redis benchmark result:
-Average ThroughPut(ops/sec) = 1390.17003705
-Average Read Latency(us) = 324.732515818 
-Average Clean Latency(us) = 1872.6
-Average Update Latency(us) = 411.260310828
