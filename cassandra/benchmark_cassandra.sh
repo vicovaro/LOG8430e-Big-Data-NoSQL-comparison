@@ -11,7 +11,7 @@ sleep 5
 echo -e "\n----------------------Create a table for use with YCSB-----------------------\n"
 # create_table=$(docker exec -it cassandra-db-node-1 sh)
 
-# sleep 5
+sleep 5
 
 cd ../YCSB
 
