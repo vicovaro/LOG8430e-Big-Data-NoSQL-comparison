@@ -40,7 +40,7 @@ YCSB Benchmark
 ```
 
 
-### Automation Script
+### Redis Automation Script
 The script will setup redis cluster, run YCSB, tear down redis cluster and analyze the result by averageing the statisics from each trial
 ```
 cd redis
@@ -81,7 +81,12 @@ YCSB benchmark
 ./bin/ycsb load cassandra-cql -p hosts="127.0.0.1" -s -P workloads/workloada > outputLoadCassandra.txt
 ./bin/ycsb run cassandra-cql -p hosts="127.0.0.1" -s -P workloads/workloada > outputRunCassandra.txt
 ```
-
+### Cassandra Automation Script
+The script will setup cassandra cluster, run YCSB, tear down cassandra cluster and analyze the result by averageing the statisics from each trial
+```
+cd cassandra
+./benchmark_cassandra.sh
+```
 
 
 ### MongoDB
@@ -106,3 +111,9 @@ YCSB benchmark
 ./bin/ycsb run mongodb -s -P workloads/workloada -p recordcount=1000 -p mongodb.upsert=true -p mongodb.url=mongodb://mongo1:30001,mongo2:30002,mongo3:30003/?replicaSet=my-replica-set > outputRunMongo.txt
 ```
 
+### MongoDB Automation Script
+The script will setup mongodb cluster, run YCSB, tear down mongodb cluster and analyze the result by averageing the statisics from each trial
+```
+cd mongo
+./benchmark_mongo.sh
+```
