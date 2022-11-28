@@ -106,7 +106,7 @@ YCSB benchmark
 ./bin/ycsb run mongodb -s -P workloads/workloada -p recordcount=1000 -p mongodb.upsert=true -p mongodb.url=mongodb://mongo1:30001,mongo2:30002,mongo3:30003/?replicaSet=my-replica-set > outputRunMongo.txt
 ```
 
-### Mongo Automation Script
+### MongoDB Automation Script
 The script will setup mongodb cluster, run YCSB, tear down mongo cluster and analyze the result by averageing the statisics from each trial
 ```
 cd mongo
