@@ -5,8 +5,8 @@ TP3 assignment on NoSQL databases comparison.
 ## Machine specification for benchmarking
 
 Ubuntu 22.04 64 bits
-AMD Ryzen 7 2700X Eight-Core Processor
-16gb of rams
+TBA
+4gb of rams
 
 ## Requirements
 
@@ -37,6 +37,14 @@ YCSB Benchmark
 ```
 ./bin/ycsb load redis -s -P workloads/workloada -p "redis.host=127.0.0.1" -p "redis.port=6379" -p "redis.cluster=true" > outputLoadRedis.txt
 ./bin/ycsb run redis -s -P workloads/workloada -p "redis.host=127.0.0.1" -p "redis.port=6379" -p "redis.cluster=true" > outputRunRedis.txt
+```
+
+
+### Automation Script
+The script will setup redis cluster, run YCSB, tear down redis cluster and analyze the result by averageing the statisics from each trial
+```
+cd redis
+./benchmark.sh
 ```
 
 ### Cassandra
