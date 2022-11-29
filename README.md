@@ -4,17 +4,68 @@ TP3 assignment on NoSQL databases comparison.
 
 ## Machine specification for benchmarking
 
-Ubuntu 22.04 64 bits
-TBA
-4gb of rams
+Host
+* CPU : Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz   2.81 GHz
+* RAM : 24.0 GB
+* OS : Windows 10
+
+
+VM created via Vmware workstation 16 Player
+* Guest OS : Ubuntu 22.04 64 bits
+* VCPU : 4
+* RAM : 8GB
+
 
 ## Requirements
 
-- You need to install docker engine with Docker Compose before running the scripts.
-- Java 11 JDK is required (we recommend Temurin JDK 11).
-- The tool YCSB is included and it uses the latest master branch. We did not use the 0.17 version. The necessary code is already compiled using Maven.
+- Install docker engine & docker compose
+- Install miniconda (for python environment mangement)
+- Install maven
+```
+sudo apt-get install maven
+```
+- Clone YCSB and use maven to build it
+```
+mvn clean package
+```
+- Create a python2 environment for YCSB
+```
+conda create -n py2 Python=2.7
+```
+- Switch to python2
+```
+conda activate py2
+```
+- Install python library
+```
+pip install -r requirements.txt
+```
+## Run the automation script to benchmark three NoSQL DB
+The script will setup DB cluster, run YCSB, tear down cluster and analyze the result by averageing the statisics from each trial
 
-## The three benchmarked NoSQL databases, booted using Docker-Compose
+### Redis Automation Script
+
+```
+cd redis
+./benchmark_redis.sh
+```
+
+### MongoDB Automation Script
+
+```
+cd mongo
+./benchmark_mongo.sh
+```
+
+### Cassandra Automation Script
+
+```
+cd cassandra
+./benchmark_cassandra.sh
+```
+
+
+## The details of each script
 
 Each database will be contained in a cluster.
 
@@ -40,12 +91,7 @@ YCSB Benchmark
 ```
 
 
-### Redis Automation Script
-The script will setup redis cluster, run YCSB, tear down redis cluster and analyze the result by averageing the statisics from each trial
-```
-cd redis
-./benchmark.sh
-```
+
 
 ### Cassandra
 
@@ -81,12 +127,7 @@ YCSB benchmark
 ./bin/ycsb load cassandra-cql -p hosts="127.0.0.1" -s -P workloads/workloada > outputLoadCassandra.txt
 ./bin/ycsb run cassandra-cql -p hosts="127.0.0.1" -s -P workloads/workloada > outputRunCassandra.txt
 ```
-### Cassandra Automation Script
-The script will setup cassandra cluster, run YCSB, tear down cassandra cluster and analyze the result by averageing the statisics from each trial
-```
-cd cassandra
-./benchmark_cassandra.sh
-```
+
 
 
 ### MongoDB
@@ -111,9 +152,4 @@ YCSB benchmark
 ./bin/ycsb run mongodb -s -P workloads/workloada -p recordcount=1000 -p mongodb.upsert=true -p mongodb.url=mongodb://mongo1:30001,mongo2:30002,mongo3:30003/?replicaSet=my-replica-set > outputRunMongo.txt
 ```
 
-### MongoDB Automation Script
-The script will setup mongodb cluster, run YCSB, tear down mongodb cluster and analyze the result by averageing the statisics from each trial
-```
-cd mongo
-./benchmark_mongo.sh
-```
+
