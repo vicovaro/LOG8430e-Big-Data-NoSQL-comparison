@@ -4,7 +4,14 @@ if [ "$ver" -gt "30" ]; then
     echo "This script requires python 2"
     exit 1
 fi
-docker_up=$(docker-compose -f redis-docker-compose.yml up -d)
+
+docker_compose="docker-compose"
+if ! command -v $docker_compose&> /dev/null
+then
+    docker_compose="docker compose"
+fi
+
+docker_up=$($docker_compose -f redis-docker-compose.yml up -d)
 
 sleep 5
 
@@ -26,7 +33,7 @@ done
 cd ../redis
 echo -e "\ntearing down redis\n"
 sleep 3
-docker_stop=$(docker-compose -f redis-docker-compose.yml down)
+docker_stop=$($docker_compose -f redis-docker-compose.yml down)
 
 
 echo -e "\nAnalyzing the result \n"
