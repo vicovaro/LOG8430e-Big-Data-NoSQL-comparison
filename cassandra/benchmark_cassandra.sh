@@ -4,11 +4,20 @@ if [ "$ver" -gt "30" ]; then
     echo "This script requires python 2"
     exit 1
 fi
-docker_up=$(docker compose -f docker-compose-cassandra-cluster.yml up -d)
+
+docker_compose="docker-compose"
+if ! command -v $docker_compose&> /dev/null
+then
+    docker_compose="docker compose"
+fi
+
+docker_up=$($docker_compose -f docker-compose-cassandra-cluster.yml up -d)
 
 sleep 5
 
 echo -e "\n----------------------Create a table for use with YCSB-----------------------\n"
+docker cp init.cql cassandra-db-node-1:/init.cql
+docker exec -it cassandra-db-node-1 sh -c "cqlsh -f init.cql"
 # create_table=$(docker exec -it cassandra-db-node-1 sh)
 
 sleep 5
@@ -31,7 +40,7 @@ done
 cd ../cassandra
 echo -e "\ntearing down cassandra\n"
 sleep 3
-docker_stop=$(docker compose -f docker-compose-cassandra-cluster.yml down)
+docker_stop=$($docker_compose -f docker-compose-cassandra-cluster.yml down)
 
 
 echo -e "\nAnalyzing the result \n"
