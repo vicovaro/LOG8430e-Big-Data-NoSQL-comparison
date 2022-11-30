@@ -2,7 +2,8 @@
 from glob import glob
 import pandas as pd 
 
-work_type = ["a", "b", "c" , "d", "e", "f"]
+#work_type = ["a", "b", "c" , "d", "e", "f"]
+work_type = [i for i in range(1,11)]
 for wo in work_type:
     print("Averaging result from benchmarking workload {} . . . . . . ".format(wo))
     f_list = glob("./{}/*Run[0-9].txt".format(wo))

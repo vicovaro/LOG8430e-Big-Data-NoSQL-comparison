@@ -24,7 +24,7 @@ sleep 5
 
 cd ../YCSB
 
-for work_type in a b c d e f
+for work_type in {1..10}
 do
     mkdir -p ../cassandra/"$work_type"
     echo -e "\n------------------------ Benchmark with workload $work_type for 3 times ------------------------\n"
